@@ -40,6 +40,8 @@ public class MainClazz {
         //问题5
         System.out.println("Output #5: "+CityService.calculateCityDistance("A","E","D"));
 
+        //测试提交
+
     }
 
 }
