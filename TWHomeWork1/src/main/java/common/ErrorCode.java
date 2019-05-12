@@ -8,10 +8,11 @@ package common;
  */
 public enum  ErrorCode {
 
-    UNKNOW_EXCEPITON    ("400", "系统未知异常！"),
+    SYSTEM_EXCEPTION    ("400", "系统自定义异常！"),
     FILE_NOT_FOUND      ("401", "文件[%s]未找到！"),
     SYSTEM_ERROR        ("402", "系统错误[%s]！"),
     FAIL_CLOSE_FILE     ("403", "关闭文件失败！"),
+    PARAM_IS_NULL       ("404", "参数不能为空！"),
 
     ;
 
@@ -35,5 +36,9 @@ public enum  ErrorCode {
 
     public String getValue() {
         return value;
+    }
+
+    public String formatDesc(Object... params){
+        return String.format(this.desc, params);
     }
 }

@@ -9,10 +9,6 @@ import java.util.*;
  * @date: 2019-05-09 12:56
  */
 public class City {
-    /**
-     * 所有城市信息Map，key为城市名，value为城市对象
-     */
-    public static Map<String, City> cityMap = new HashMap<String, City>();
 
     /**
      * 城市名称
@@ -22,7 +18,17 @@ public class City {
     /**
      * 以当前城市为起点的路线
      */
-    private Set<CityRoute> routes;
+    private Set<Route> routes;
+
+//    /**
+//     * 以当前城市为起点的“多节点路线”
+//     */
+//    private Set<RouteMultiple> routeMultiples;
+//
+//    /**
+//     * 以当前城市为起点的循环路线
+//     */
+//    private Set<RouteMultipleCircle> routeMultipleCircles;
 
     /***
      * 构造方法
@@ -34,14 +40,14 @@ public class City {
 
     /**
      * 给城市增加路线
-     * @param cityRoute
+     * @param Route
      */
-    public void addCityRoute(CityRoute cityRoute) {
+    public void addRoute(Route Route) {
         if (routes == null) {
-            routes = new HashSet<CityRoute>();
+            routes = new HashSet<Route>();
         }
-        if (cityRoute != null) {
-            routes.add(cityRoute);
+        if (Route != null) {
+            routes.add(Route);
         }
     }
 
@@ -54,11 +60,11 @@ public class City {
         this.name = name;
     }
 
-    public Set<CityRoute> getRoutes() {
+    public Set<Route> getRoutes() {
         return routes;
     }
 
-    public void setRoutes(Set<CityRoute> routes) {
+    public void setRoutes(Set<Route> routes) {
         this.routes = routes;
     }
 
@@ -70,7 +76,7 @@ public class City {
                 '}';
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -87,5 +93,5 @@ public class City {
         int result = 17;
         result = 31 * result + (name == null ? 0 : name.hashCode());
         return result;
-    }*/
+    }
 }

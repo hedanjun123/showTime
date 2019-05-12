@@ -14,15 +14,15 @@ public class CommonException extends RuntimeException{
     /**
      * 默认未知异常
      */
-    public CommonException(Throwable exception) {
-        this(ErrorCode.UNKNOW_EXCEPITON.getValue(), ErrorCode.UNKNOW_EXCEPITON.getDesc(), exception, null);
+    public CommonException(Throwable e) {
+        this(ErrorCode.SYSTEM_EXCEPTION.getValue(), ErrorCode.SYSTEM_EXCEPTION.getDesc(), e);
     }
 
     /**
      * 枚举值异常
      */
-    public CommonException(ErrorCode errorCode, Object... obj) {
-        this(errorCode.getValue(), errorCode.getDesc(), null, obj);
+    public CommonException(ErrorCode errorCode, Object... params) {
+        this(errorCode.getValue(), errorCode.formatDesc(params), null);
     }
 
     /**
@@ -32,10 +32,9 @@ public class CommonException extends RuntimeException{
      * @param message
      * @param exception
      */
-    public CommonException(String code, String message, Throwable exception, Object... obj) {
+    public CommonException(String code, String message, Throwable exception) {
         super(message, exception);
         message = (message == null ? (exception == null ? null : exception.getMessage()) : message);
-        message = String.format(message, obj);
         setCode(code);
         setMsg(message);
     }

@@ -4,7 +4,6 @@ import common.CommonException;
 import common.ErrorCode;
 
 import java.io.*;
-import java.util.stream.Stream;
 
 /**
  * 文件处理工具类
@@ -32,7 +31,7 @@ public class FileUtils {
                 throw new CommonException(ErrorCode.FILE_NOT_FOUND, filePath);
             }
         } catch (Exception e) {
-            throw new CommonException(ErrorCode.SYSTEM_ERROR, e.getMessage());
+            throw new CommonException(e);
         } finally {
             closeStream(br);
         }
