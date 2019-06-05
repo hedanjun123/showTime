@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.store.mapper.CartMapper">
+
+	<!-- 插入数据 -->
+	<!-- Integer insert(Cart cart) -->
+	<insert id="insert"
+		parameterType="cn.tedu.store.entity.Cart"
+		useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO t_cart (git
+			uid, goods_id, goods_num,
+			created_time,
+			created_user,
+			modified_time,
+			modified_user
+		) VALUES (
+			#{uid}, #{goodsId}, #{goodsNum},
+			#{createdTime},
+			#{createdUser},
+			#{modifiedTime},
+			#{modifiedUser}
+		);
+	</insert>
+
+	<!-- 查询 
+	-->
+	<!-- Cart findCartByUidAndGoodsId(
+		@Param("uid") Integer uid, 
+		@Param("goodsId") String goodsId) -->
+	<select id="findCartByUidAndGoodsId"
+		resultType="cn.tedu.store.entity.Cart">
+		SELECT 
+			id, goods_num AS goodsNum
+		FROM 
+			t_cart 
+		WHERE 
+			goods_id=#{goodsId} AND uid=#{uid}
+	</select>
+
+	<!-- 
+	修改数量 -->
+	<!-- Integer updateGoodsNum(
+		@Param("id") Integer id, 
+		@Param("goodsNum") Integer goodsNum) -->
+	<update id="updateGoodsNum">
+		UPDATE 
+			t_cart 
+		SET 
+			goods_num=#{goodsNum} 
+		WHERE 
+			id=#{id}
+	</update>
+	
+	<!--  -->
+	<!-- List<CartVO> getList(Integer uid) -->
+	<select id="getList"
+		resultType="cn.tedu.store.vo.CartVO">
+		SELECT 
+			c.id	AS	cartId,
+			c.uid,
+			c.goods_id	AS	goodsId,
+			c.goods_num	AS	goodsNum,
+			g.title	AS	goodsTitle,
+			g.image	AS	goodsImage,
+			g.price	AS	goodsPrice
+		FROM 
+			t_cart AS c
+		INNER JOIN
+			t_goods AS g
+		ON 
+			c.goods_id=g.id
+		WHERE
+			c.uid=#{uid};
+	</select>
+
+	<!--  -->
+	<!-- Cart findCartById(Integer id); -->
+	<select id="findCartById"
+		resultType="cn.tedu.store.entity.Cart">
+		SELECT 
+			goods_num AS goodsNum
+		FROM 
+			t_cart
+		WHERE 
+			id=#{id}
+	</select>
+	
+	<!--  -->
+	<!-- List<CartVO> getListByIds(Integer[] ids) -->
+	<select id="getListByIds" 
+		resultType="cn.tedu.store.vo.CartVO">
+		SELECT 
+			c.id	AS	cartId,
+			c.uid,
+			c.goods_id	AS	goodsId,
+			c.goods_num	AS	goodsNum,
+			g.title	AS	goodsTitle,
+			g.image	AS	goodsImage,
+			g.price	AS	goodsPrice
+		FROM 
+			t_cart AS c
+		INNER JOIN
+			t_goods AS g
+		ON 
+			c.goods_id=g.id
+		WHERE
+			c.id IN (
+			<foreach collection="array" 
+				item="id" separator=",">
+			#{id}
+			</foreach>
+			)
+	</select>
+
+</mapper>
+
+
+
+
+

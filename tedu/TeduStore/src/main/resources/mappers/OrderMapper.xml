@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.store.mapper.OrderMapper">
+
+	<!-- 创建订单 -->
+	<!-- Integer insertOrder(Order order) -->
+	<insert id="insertOrder"
+		parameterType="cn.tedu.store.entity.Order"
+		useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO t_order (
+			uid,
+			recv_name, recv_phone,
+			recv_district, recv_address,
+			recv_zip,
+			pay, status,
+			order_time, pay_time,
+			created_time, created_user,
+			modified_time, modified_user 
+		) VALUES (
+			#{uid},
+			#{recvName}, #{recvPhone},
+			#{recvDistrict}, #{recvAddress},
+			#{recvZip},
+			#{pay}, #{status},
+			#{orderTime}, #{payTime},
+			#{createdTime}, #{createdUser},
+			#{modifiedTime}, #{modifiedUser} 
+		)
+	</insert>
+
+	<!-- 创建订单商品 -->
+	<!-- Integer insertOrderItem(OrderItem orderItem) -->
+	<insert id="insertOrderItem"
+		parameterType="cn.tedu.store.entity.OrderItem"
+		useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO t_order_item (
+			order_id,
+			goods_id,
+			goods_image, goods_title,
+			goods_price, goods_num,
+			created_time, created_user,
+			modified_time, modified_user 
+		) VALUES (
+			#{orderId},
+			#{goodsId},
+			#{goodsImage}, #{goodsTitle},
+			#{goodsPrice}, #{goodsNum},
+			#{createdTime}, #{createdUser},
+			#{modifiedTime}, #{modifiedUser} 
+		)
+	</insert>
+	
+	<resultMap id="OrderMap" 
+		type="cn.tedu.store.vo.OrderVO">
+		<id column="oid" property="id" />
+		<result column="uid" property="uid" />
+		<result column="recv_name" property="recvName" />
+		<result column="recv_phone" property="recvPhone" />
+		<result column="recv_district" property="recvDistrict" />
+		<result column="recv_address" property="recvAddress" />
+		<result column="recv_zip" property="recvZip" />
+		<result column="pay" property="pay" />
+		<result column="status" property="status" />
+		<result column="order_time" property="orderTime" />
+		<result column="pay_time" property="payTime" />
+		<collection property="orderItems"
+			ofType="cn.tedu.store.entity.OrderItem">
+			<id column="oiid" property="id" />
+			<result column="order_id" property="orderId" />
+			<result column="goods_id" property="goodsId" />
+			<result column="goods_title" property="goodsTitle" />
+			<result column="goods_image" property="goodsImage" />
+			<result column="goods_price" property="goodsPrice" />
+			<result column="goods_num" property="goodsNum" />
+		</collection>
+	</resultMap>
+
+	<!-- 根据订单id查询订单详情 -->
+	<!-- OrderVO getOrderById(Integer orderId) -->
+	<select id="getOrderById"
+		resultMap="OrderMap">
+		SELECT
+			o.id AS oid,
+			o.uid,
+			recv_name, recv_phone,
+			recv_district, recv_address,
+			recv_zip,
+			pay, status,
+			order_time, pay_time,
+			oi.id AS oiid,
+			order_id,
+			goods_id,
+			goods_title, goods_image,
+			goods_price, goods_num
+		FROM 
+			t_order AS o
+		INNER JOIN
+			t_order_item AS oi
+		ON
+			o.id = oi.order_id
+		WHERE
+			o.id=#{orderId};
+	</select>
+
+</mapper>
+
+
+
+
+
